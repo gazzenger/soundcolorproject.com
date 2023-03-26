@@ -40,14 +40,16 @@ export const PatternPicker = injectAndObserve(
       const possiblePatterns = Object.keys(patternData)
       return html`
         <${Fragment}>
-          <div>
-            ${
-              possiblePatterns.map(pattern => html`
-                <button type="button" onclick="${() => this.setPattern(pattern)}" disabled=${pattern === currentPattern}>
-                  ${patternData[pattern].label}
-                </button>
-              `)
-            }
+          <div class="color-selector">
+            <div>
+              ${
+                possiblePatterns.map(pattern => html`
+                  <button type="button" onclick="${() => this.setPattern(pattern)}" disabled=${pattern === currentPattern}>
+                    ${patternData[pattern].label}
+                  </button>
+                `)
+              }
+            </div>
             ${this.renderCustomButtons()}
           </div>
           <label id="monochromatic">

@@ -54,15 +54,18 @@ export const ColorPicker = injectAndObserve(
         ? `${note[0]} Sharp`
         : note
       return html`
-        <button
-          ref=${this.createPicker}
-          type="button"
-          role="button"
-          aria-label="custom color for note ${noteDesc}"
-          style="background: ${hsvToHex(customColors[note])}"
-        >
-          ${note}
-        </button>
+        <div>
+          <button
+            ref=${this.createPicker}
+            type="button"
+            role="button"
+            aria-label="custom color for note ${noteDesc}"
+            style="background: ${hsvToHex(customColors[note])}"
+          >
+            ${note}
+          </button>
+          <input type="number" min="20" max="20000"/>
+        </div>
       `
     }
   },

@@ -1,4 +1,4 @@
-import { sampleRate } from './context.js'
+import { context } from './context.js'
 import { getFft, fftSize } from './analyzer.js'
 import { getNoteInformation } from './getNoteInformation.js'
 import { patternsStore } from '../state/patternsStore.js'
@@ -96,7 +96,7 @@ function getStrongestValues(fft, minToCount) {
 
 function getTones(strengths) {
   let tones = strengths.map(({ value, idx }) => {
-    const frequency = idx * (sampleRate) / fftSize
+    const frequency = idx * (context.sampleRate) / fftSize
 
     return {
       dB: value,
