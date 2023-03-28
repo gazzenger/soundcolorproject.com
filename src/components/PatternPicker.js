@@ -28,6 +28,17 @@ export const PatternPicker = injectAndObserve(
       })
     }
 
+    reset = () => {
+      const a0Reference = setA0Reference('', null);
+      this.props.patterns.patternData.custom.colors.reset()
+
+      this.setState({
+        a0Reference,
+        changingNote: null,
+        changingNoteValue: null,
+      })
+    }
+
     setPattern (pattern) {
       resume()
       this.props.patterns.currentPattern = pattern
@@ -47,7 +58,7 @@ export const PatternPicker = injectAndObserve(
               type="button"
               role="button"
               aria-label="reset custom colors"
-              onclick="${this.props.patterns.patternData.custom.colors.reset}"
+              onclick="${this.reset}"
             >
               Reset
             </button>
