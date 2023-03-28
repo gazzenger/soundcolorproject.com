@@ -13,7 +13,12 @@ export async function getUserMedia(deviceId = 'default') {
 }
 
 export async function getAudioSource(deviceId = 'default') {
-  const stream = await getUserMedia(deviceId)
+  let stream = null
+  if (!deviceId) {
+    stream = document.getElementById('audio')
+    return context.createMediaElementSource(stream)
+  }
+  stream = await getUserMedia(deviceId)
   await resumePromise
   return context.createMediaStreamSource(stream)
 }

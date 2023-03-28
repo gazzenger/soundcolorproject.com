@@ -2,6 +2,7 @@
 import { context, resumePromise } from './context.js'
 import { getAudioSource } from './microphoneSource.js'
 import { patternsStore } from '../state/patternsStore.js'
+import { mediaStore } from '../state/mediaStore.js'
 
 export const fftSize = 32768 // maximum size allowed
 let analyser
@@ -22,6 +23,9 @@ export async function getAnalyser() {
       fftArray = new Float32Array(analyser.frequencyBinCount)
 
       source.connect(analyser)
+      if (!mediaStore.audioMicSelected) {
+        source.connect(context.destination)
+      }
       return analyser
     })()
   }

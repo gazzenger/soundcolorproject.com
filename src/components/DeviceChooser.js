@@ -3,23 +3,19 @@ import { Component } from 'preact';
 import { html } from '../html.js'
 import { injectAndObserve } from '../state/injectAndObserve.js'
 
-export let audioMicSelected = false;
-
 export const DeviceChooser = injectAndObserve(
   ({ media }) => ({ media }),
   class DeviceChooser extends Component {
-    state = { audioMicSelected };
 
     onDeviceChange = (ev) => {
       this.props.media.currentDeviceId = ev.target.value
     }
 
     updateAudioSelector = () => {
-      audioMicSelected = !audioMicSelected;
-      this.setState({ audioMicSelected})
+      this.props.media.audioMicSelected = !this.props.media.audioMicSelected
     }
 
-    render ({ media }, { audioMicSelected }) {
+    render ({ media }) {
       return html`
         <h1>Audio Selector</h1>
         <div class="audio-selector-container">
@@ -56,13 +52,13 @@ export const DeviceChooser = injectAndObserve(
                 <td id="device-chooser">
                   <div>
                     <label class="switch">
-                      <input type="checkbox" checked="${audioMicSelected}" onchange=${this.updateAudioSelector} />
+                      <input type="checkbox" checked="${media.audioMicSelected}" onchange=${this.updateAudioSelector} />
                       <span class="slider round"></span>
                     </label>
                   </div>
                 </td>
                 <td>
-                  <select value=${media.currentDeviceId} onchange=${this.onDeviceChange} disabled=${audioMicSelected ? '' : 'disabled'}>
+                  <select value=${media.currentDeviceId} onchange=${this.onDeviceChange} disabled=${media.audioMicSelected ? '' : 'disabled'}>
                   ${
                     media.possibleDevices.map(({ deviceId, label }) => html`
                       <option value=${deviceId}>${label}</option>
