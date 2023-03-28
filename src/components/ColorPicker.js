@@ -48,7 +48,7 @@ export const ColorPicker = injectAndObserve(
       })
     }
 
-    render ({ note, patterns }) {
+    render ({ note, patterns, handleA0UpdateCall, frequency  }) {
       const customColors = patterns.patternData.custom.colors
       const noteDesc = note.indexOf('#') > 1
         ? `${note[0]} Sharp`
@@ -64,7 +64,7 @@ export const ColorPicker = injectAndObserve(
           >
             ${note}
           </button>
-          <input type="number" min="20" max="20000"/>
+          <input type="number" min="20" max="20000" step="0.1" value="${frequency}" onchange=${(ev) => handleA0UpdateCall(ev, note)}/>
         </div>
       `
     }

@@ -162,6 +162,7 @@ button:disabled, button:disabled:hover, button:disabled:active {
     flex-direction: row;
     justify-content: flex-start;
     max-width: 70vw;
+    gap: 2px;
 }
 
 #custom-colors button {
@@ -179,8 +180,8 @@ button:disabled, button:disabled:hover, button:disabled:active {
 }
 
 #custom-colors input {
-    width: 100%;
-    font-size: 12pt;
+    width: 60px;
+    font-size: 8pt;
 }
 
 #custom-colors div {
