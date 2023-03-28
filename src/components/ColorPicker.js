@@ -61,6 +61,7 @@ export const ColorPicker = injectAndObserve(
             role="button"
             aria-label="custom color for note ${noteDesc}"
             style="background: ${hsvToHex(customColors[note])}"
+            class="color-button"
           >
             ${note}
           </button>

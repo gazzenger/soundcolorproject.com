@@ -5,18 +5,18 @@ import { getAnalyser } from '../audio/analyzer.js'
 import { getMiniAnalyser } from '../audio/miniAnalyser.js'
 
 const defaultCustomColors = {
-  'C': hexToHsv('#E2CF0B'),
-  'C#': hexToHsv('#FFE50C'),
-  'D': hexToHsv('#35C80B'),
-  'D#': hexToHsv('#0B33A5'),
-  'E': hexToHsv('#19BDA2'),
-  'F': hexToHsv('#835BD9'),
-  'F#': hexToHsv('#774ACB'),
-  'G': hexToHsv('#E4C5DD'),
-  'G#': hexToHsv('#E0BFD7'),
-  'A': hexToHsv('#A30008'),
-  'A#': hexToHsv('#9B1A6F'),
-  'B': hexToHsv('#BA000A'),
+  'C': hexToHsv('#FF0000'),
+  'C#': hexToHsv('#FF5300'),
+  'D': hexToHsv('#FFA500'),
+  'D#': hexToHsv('#FFD200'),
+  'E': hexToHsv('#FFFF00'),
+  'F': hexToHsv('#80FF00'),
+  'F#': hexToHsv('#00FF00'),
+  'G': hexToHsv('#008080'),
+  'G#': hexToHsv('#0000FF'),
+  'A': hexToHsv('#4800FF'),
+  'A#': hexToHsv('#8F00FF'),
+  'B': hexToHsv('#C70080'),
 }
 
 function getCustomColorValue (name, note) {
@@ -145,6 +145,23 @@ export const patternsStore = observable({
         'A': hexToHsv('#A30008'),
         'A#': hexToHsv('#9B1A6F'),
         'B': hexToHsv('#BA000A'),
+      },
+    },
+    rosicrucian: {
+      label: 'Rosicrucian',
+      colors: {
+        'C': hexToHsv('#FF0000'),
+        'C#': hexToHsv('#FF5300'),
+        'D': hexToHsv('#FFA500'),
+        'D#': hexToHsv('#FFD200'),
+        'E': hexToHsv('#FFFF00'),
+        'F': hexToHsv('#80FF00'),
+        'F#': hexToHsv('#00FF00'),
+        'G': hexToHsv('#008080'),
+        'G#': hexToHsv('#0000FF'),
+        'A': hexToHsv('#4800FF'),
+        'A#': hexToHsv('#8F00FF'),
+        'B': hexToHsv('#C70080'),
       },
     },
     custom: {

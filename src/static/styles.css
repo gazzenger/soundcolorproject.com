@@ -381,8 +381,11 @@ input:checked + .slider:before {
     text-align: center;
 }
 
-
 #device-chooser div {
     display: flex;
     justify-content: center;
+}
+
+.color-button {
+    text-shadow: 1px 1px 6px #000;
 }
