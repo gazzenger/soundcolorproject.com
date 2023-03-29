@@ -9,6 +9,11 @@ export const resumePromise = new Promise(resolve => {
   onResume = resolve
 })
 
+export async function initResumePromise () {
+  await resumePromise // init the promise
+  await resumePromise // return the resolved promise
+}
+
 let internalResumePromise
 export function resume() {
   if (!internalResumePromise) {

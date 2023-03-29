@@ -19,7 +19,6 @@ export async function getAudioSource(deviceId = 'default') {
     return context.createMediaElementSource(stream)
   }
   stream = await getUserMedia(deviceId)
-  await resumePromise
   return context.createMediaStreamSource(stream)
 }
 

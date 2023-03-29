@@ -1,5 +1,5 @@
 
-import { context } from './context.js'
+import { context, initResumePromise } from './context.js'
 import { getAnalyser } from './analyzer.js'
 import { patternsStore } from '../state/patternsStore.js'
 
@@ -12,6 +12,7 @@ let analyserPromise
 export async function getMiniAnalyser() {
   if (!analyserPromise) {
     analyserPromise = (async () => {
+      await initResumePromise()
       const source = prevSource || await getAnalyser()
       prevSource = source
 

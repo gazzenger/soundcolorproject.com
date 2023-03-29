@@ -1,5 +1,5 @@
 
-import { context, resumePromise } from './context.js'
+import { context, initResumePromise } from './context.js'
 import { getAudioSource } from './microphoneSource.js'
 import { patternsStore } from '../state/patternsStore.js'
 import { mediaStore } from '../state/mediaStore.js'
@@ -13,6 +13,7 @@ let prevSource
 export async function getAnalyser() {
   if (!analyserPromise) {
     analyserPromise = (async () => {
+      await initResumePromise()
       const source = prevSource || await getAudioSource()
       prevSource = source
 
