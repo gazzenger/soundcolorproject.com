@@ -15,6 +15,27 @@ export const DeviceChooser = injectAndObserve(
       this.props.media.audioMicSelected = !this.props.media.audioMicSelected
     }
 
+    onFileSelect = () => {
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        const buffer = e.target.result
+        const fileBlob = new Blob([new Uint8Array(buffer)])
+
+        const fileURL = window.URL.createObjectURL(fileBlob)
+        this.audioElement.src = fileURL
+      };
+
+      this.inputElement.click()
+      this.inputElement.addEventListener('change', () => {
+        const [file] = this.inputElement.files
+        reader.readAsArrayBuffer(file)
+      })
+    }
+
+    onLoopSelect = (ev) => {
+      this.audioElement.loop = ev.target.checked
+    }
+
     render ({ media }) {
       return html`
         <h1>Audio Selector</h1>
@@ -41,13 +62,31 @@ export const DeviceChooser = injectAndObserve(
             <tbody>
               <tr>
                 <td>
-                  <audio id="audio"
-                  controls
-                  src="SoundHelix-Song-1.mp3">
-                    <a href="SoundHelix-Song-1.mp3">
-                        Download audio
-                    </a>
-                  </audio>
+                  <div>
+                    <audio id="audio"
+                    ref="${audio => this.audioElement = audio}"
+                    controls
+                    src="SoundHelix-Song-1.mp3">
+                      <a href="SoundHelix-Song-1.mp3">
+                          Download audio
+                      </a>
+                    </audio>
+                    <button
+                      onclick=${this.onFileSelect}
+                      style="max-width: 100px">
+                      Select File
+                    </button>
+                    <input
+                      type="file"
+                      ref="${input => this.inputElement = input}"
+                      id="upload"
+                      style="display:none"
+                      accept=".mp3,audio/*"/>
+                    <div>
+                      <input type="checkbox" id="loop" onchange=${this.onLoopSelect}/>
+                      <label for="loop">Loop</label>
+                    </div>
+                  </div>
                 </td>
                 <td id="device-chooser">
                   <div>
