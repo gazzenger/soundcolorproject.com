@@ -10,6 +10,7 @@ import { TextHider } from './TextHider.js'
 import { Shortcuts } from './Shortcuts.js'
 import { Footer } from './Footer.js'
 import { MiniAnalyser } from './MiniAnalyser.js'
+import { NoteEqualizer } from './NoteEqualizer.js'
 import { Sliders } from './Sliders.js'
 
 export const Root = injectAndObserve(
@@ -26,6 +27,7 @@ export const Root = injectAndObserve(
               <${PatternPicker}/>
               <${SoundDetails}/>
               <${MiniAnalyser}/>
+              <${NoteEqualizer}/>
               <div id='spreader'/>
               <${DeviceChooser}/>
               <${Footer}>
