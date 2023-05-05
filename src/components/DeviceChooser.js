@@ -23,6 +23,7 @@ export const DeviceChooser = injectAndObserve(
 
         const fileURL = window.URL.createObjectURL(fileBlob)
         this.audioElement.src = fileURL
+        this.audioElement.play()
       };
       const [file] = this.inputElement.files
       reader.readAsArrayBuffer(file)
