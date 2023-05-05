@@ -24,12 +24,8 @@ export const DeviceChooser = injectAndObserve(
         const fileURL = window.URL.createObjectURL(fileBlob)
         this.audioElement.src = fileURL
       };
-
-      this.inputElement.click()
-      this.inputElement.addEventListener('change', () => {
-        const [file] = this.inputElement.files
-        reader.readAsArrayBuffer(file)
-      })
+      const [file] = this.inputElement.files
+      reader.readAsArrayBuffer(file)
     }
 
     onLoopSelect = (ev) => {
@@ -64,29 +60,23 @@ export const DeviceChooser = injectAndObserve(
                 <td>
                   <div>
                     <audio id="audio"
-                    ref="${audio => this.audioElement = audio}"
-                    controls
-                    src="SoundHelix-Song-1.mp3">
-                      <a href="SoundHelix-Song-1.mp3">
-                          Download audio
-                      </a>
+                      ref="${audio => this.audioElement = audio}"
+                      controls
+                      src=""
+                    >
                     </audio>
-                    <button
-                      onclick=${this.onFileSelect}
-                      style="max-width: 100px">
-                      Select File
-                    </button>
-                    <input
-                      type="file"
-                      ref="${input => this.inputElement = input}"
-                      id="upload"
-                      style="display:none"
-                      accept=".mp3,audio/*"/>
                     <div>
                       <input type="checkbox" id="loop" onchange=${this.onLoopSelect}/>
                       <label for="loop">Loop</label>
                     </div>
                   </div>
+                  <input
+                    type="file"
+                    ref="${input => this.inputElement = input}"
+                    id="upload"
+                    onchange=${this.onFileSelect}
+                    accept=".mp3,audio/*"
+                  />
                 </td>
                 <td id="device-chooser">
                   <div>
