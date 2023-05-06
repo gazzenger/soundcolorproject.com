@@ -71,6 +71,7 @@ body {
 }
 
 #footer {
+    margin-top: 40px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -414,4 +415,8 @@ input:checked + .slider:before {
 
 .color-button {
     text-shadow: 1px 1px 6px #000;
+}
+
+#upload {
+    font-size: 14pt;
 }
