@@ -27,6 +27,11 @@ body {
     pointer-events: none;
 }
 
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
 #background-colors {
     position: fixed;
     z-index: -2;

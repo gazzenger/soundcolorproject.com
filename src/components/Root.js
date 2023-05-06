@@ -6,7 +6,6 @@ import { PatternPicker } from './PatternPicker.js'
 import { ColorRenderer } from './ColorRenderer.js'
 import { DeviceChooser } from './DeviceChooser.js'
 import { SoundDetails } from './SoundDetails.js'
-import { TextHider } from './TextHider.js'
 import { Shortcuts } from './Shortcuts.js'
 import { Footer } from './Footer.js'
 import { MiniAnalyser } from './MiniAnalyser.js'
@@ -14,21 +13,23 @@ import { NoteEqualizer } from './NoteEqualizer.js'
 import { Sliders } from './Sliders.js'
 
 export const Root = injectAndObserve(
-  ({ media }) => ({ media }),
+  ({ media, renderState }) => ({ media, renderState }),
   class Root extends Component {
-    render ({ media }) {
+    render ({ media, renderState: { showText } }) {
       if (media.ready) {
         return html`
           <div id="details-view">
             <${ColorRenderer}/>
-            <${TextHider}>
-              <h1>SoundColor</h1>
-              <p>Select a color pattern:</p>
+            <h1 class="${showText ? '' : 'hidden'}">SoundColor</h1>
+            <p class="${showText ? '' : 'hidden'}">Select a color pattern:</p>
+            <div class="${showText ? '' : 'hidden'}">
               <${PatternPicker}/>
               <${SoundDetails}/>
               <${MiniAnalyser}/>
-              <${NoteEqualizer}/>
-              <div id='spreader'/>
+            </div>
+            <${NoteEqualizer}/>
+            <div id='spreader'/>
+            <div class="${showText ? '' : 'hidden'}">
               <${DeviceChooser}/>
               <${Footer}>
                 <${Shortcuts}/>
@@ -37,7 +38,7 @@ export const Root = injectAndObserve(
               <div id="info">
                 <a aria-label="About Sound Color Project" href="/info.html">Info</a>
               </div>
-            </${TextHider}>
+            </div>
           </div>
         `
       } else if (media.error) {
