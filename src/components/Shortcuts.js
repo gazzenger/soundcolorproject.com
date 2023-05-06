@@ -18,6 +18,9 @@ export class Shortcuts extends Component {
         <div>
           <p><span>'enter'</span> = stop/start color pattern</p><button onclick="${() => this.emulateKeyPress('Enter')}" aria-label="Stop the color pattern">Stop Color Pattern</button>
         </div>
+        <div>
+          <p><span>'e'</span> = stop/start note equalizer</p><button onclick="${() => this.emulateKeyPress('e')}" aria-label="Stop the note equalizer">Stop Note Equalizer</button>
+        </div>
           ${
             document.fullscreenEnabled
               ? html`<p><span>'f'</span> = enter/leave fullscreen</p><button  onclick="${() => this.emulateKeyPress('f')}" aria-label="Enter fullscreen mode">Enter Fullscreen</button>`

@@ -7,6 +7,7 @@ import { patternsStore } from './patternsStore.js'
 export const renderStateStore = observable({
   showText: true,
   showColors: false,
+  showNoteEqualizer: true,
 })
 
 document.addEventListener('keydown', (ev) => {
@@ -18,6 +19,8 @@ document.addEventListener('keydown', (ev) => {
     }
     renderStateStore.showColors = !renderStateStore.showColors
     resume()
+  } else if (ev.key === 'e') {
+    renderStateStore.showNoteEqualizer = !renderStateStore.showNoteEqualizer
   } else if (ev.key === 'f') {
     if (document.fullscreenEnabled) {
       if (document.fullscreenElement) {

@@ -13,7 +13,7 @@ import * as d3 from "d3";
 
 const BASE = 1.5
 export const NoteEqualizer = injectAndObserve(
-  ({ analysis }) => ({ analysis }),
+  ({ analysis, renderState }) => ({ analysis, renderState }),
   class NoteEqualizer extends Component {
 
     // map the note to the currently select color
@@ -26,8 +26,8 @@ export const NoteEqualizer = injectAndObserve(
       return (densities.find(density => density.note === note)?.maxDensity - minDensity) / (maxDensity - minDensity) * 100 ;
     }
 
-    render ({ analysis }) {
-      if (!analysis.tones || !patternsStore.currentPattern) {
+    render ({ analysis, renderState: { showNoteEqualizer } }) {
+      if (!analysis.tones || !patternsStore.currentPattern || !showNoteEqualizer) {
         return; // required in order to force-re-render on update
       } 
       const fftData = getFft()
