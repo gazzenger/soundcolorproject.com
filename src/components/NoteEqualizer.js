@@ -2,12 +2,10 @@
 import { Component } from 'preact';
 import { html } from '../html.js'
 import { injectAndObserve } from '../state/injectAndObserve.js'
-import { dBtoVolume } from '../audio/getAnalysis.js'
 import { hsvToHex } from '../color/colorHelpers.js'
 import { patternsStore } from '../state/patternsStore.js'
 
 import { context } from '../audio/context.js'
-// import { fftSize } from '../audio/miniAnalyser.js'
 import { getFft, fftSize } from '../audio/analyzer.js'
 import { getNoteInformation } from '../audio/getNoteInformation.js'
 
@@ -18,68 +16,58 @@ export const NoteEqualizer = injectAndObserve(
   ({ analysis }) => ({ analysis }),
   class NoteEqualizer extends Component {
 
-
+    // map the note to the currently select color
     colorMapper(note, currentColorPattern) {
       return hsvToHex(currentColorPattern[note])
     }
 
+    // convert density into a % height for a given note
     densityMapper(note, densities, minDensity, maxDensity) {
-      return (densities.find(density => density.note === note)?.summedDensity - minDensity) / (maxDensity - minDensity) * 100 ;
+      return (densities.find(density => density.note === note)?.maxDensity - minDensity) / (maxDensity - minDensity) * 100 ;
     }
 
     render ({ analysis }) {
-      if (!analysis.tones) {
+      if (!analysis.tones || !patternsStore.currentPattern) {
         return; // required in order to force-re-render on update
       } 
+      const fftData = getFft()
+      const heights = [...fftData].map(dB => (BASE ** (dB / 10)) * 100)
 
       const currentColorPattern = patternsStore.patternData[patternsStore.currentPattern || 'custom'].colors
 
-      // const { miniFft } = analysis
-
-      // console.log(
-      //   JSON.stringify(patternsStore.patternData[patternsStore.currentPattern || 'custom'].colors['C'], undefined, 2)
-      // );
-
-      // console.log(getFft())
-      const miniFft = getFft()
-
-      const heights = [...miniFft].map(dB => (BASE ** (dB / 10)) * 100)
-      // const frequencies = heights.map((_,i) => (i+1) * (context.sampleRate) / fftSize)
-
-
-      const summedDensities = Array.from(
+      const maxDensities = Array.from(
         d3.rollup(
           heights,
           v => ({
-            summedDensity: d3.sum(v, e => e),
+            maxDensity: d3.max(v, e => e),
           }),
-          (_,i) => getNoteInformation(i+1).note
+          (_,i) => getNoteInformation((i+1) * (context.sampleRate) / fftSize).note
         ), ([note, data]) => ({
           note,
-          summedDensity: data.summedDensity,
+          maxDensity: data.maxDensity,
         })
       );
 
-      const minDensity = d3.min(summedDensities, e => e.summedDensity);
-      const maxDensity = d3.max(summedDensities, e => e.summedDensity);
+      const minDensity = d3.min(maxDensities, e => e.maxDensity);
+      const maxDensity = d3.max(maxDensities, e => e.maxDensity);
 
       return html`
         <div id="note-equalizer">
           <table style="">
             <thead>
               <tr class="note-row">
-                <th><div style="background-color: ${this.colorMapper('A', currentColorPattern)}; height:${this.densityMapper('A', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('A#', currentColorPattern)}; height:${this.densityMapper('A#', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('B', currentColorPattern)}; height:${this.densityMapper('B', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('C', currentColorPattern)}; height:${this.densityMapper('C', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('C#', currentColorPattern)}; height:${this.densityMapper('C#', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('D', currentColorPattern)}; height:${this.densityMapper('D', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('D#', currentColorPattern)}; height:${this.densityMapper('D#', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('E', currentColorPattern)}; height:${this.densityMapper('E', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('F', currentColorPattern)}; height:${this.densityMapper('F', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('F#', currentColorPattern)}; height:${this.densityMapper('F#', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('G', currentColorPattern)}; height:${this.densityMapper('G', summedDensities, minDensity, maxDensity)}%;"></div></th>
-                <th><div style="background-color: ${this.colorMapper('G#', currentColorPattern)}; height:${this.densityMapper('G#', summedDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('A', currentColorPattern)}; height:${this.densityMapper('A', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('A#', currentColorPattern)}; height:${this.densityMapper('A#', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('B', currentColorPattern)}; height:${this.densityMapper('B', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('C', currentColorPattern)}; height:${this.densityMapper('C', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('C#', currentColorPattern)}; height:${this.densityMapper('C#', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('D', currentColorPattern)}; height:${this.densityMapper('D', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('D#', currentColorPattern)}; height:${this.densityMapper('D#', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('E', currentColorPattern)}; height:${this.densityMapper('E', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('F', currentColorPattern)}; height:${this.densityMapper('F', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('F#', currentColorPattern)}; height:${this.densityMapper('F#', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('G', currentColorPattern)}; height:${this.densityMapper('G', maxDensities, minDensity, maxDensity)}%;"></div></th>
+                <th><div style="background-color: ${this.colorMapper('G#', currentColorPattern)}; height:${this.densityMapper('G#', maxDensities, minDensity, maxDensity)}%;"></div></th>
               </tr>
             </thead>
             <tbody>

@@ -121,6 +121,10 @@ body {
     vertical-align: bottom;
 }
 
+#note-equalizer table th div {
+    box-shadow: 1px 1px 6px #000;
+}
+
 h1 {
     font-size: 11px;
     text-transform: uppercase;
